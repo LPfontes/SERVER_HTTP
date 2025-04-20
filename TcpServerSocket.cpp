@@ -7,8 +7,15 @@ TcpServerSocket::TcpServerSocket(int domain, int service, int protocol, int port
 
 int TcpServerSocket::connect(int sock, struct sockaddr_in address)
 {
+    // Usa bind para deixar o SO escolher a porta, se address.sin_port == 0
     int connection = bind(sock, (struct sockaddr*)&address, sizeof(address));
+
+    // Captura a porta real que foi associada
+    socklen_t addrlen = sizeof(address);
+    getsockname(sock, (struct sockaddr *)&address, &addrlen); // read binding
+    int local_port = ntohs(address.sin_port);  
     test_connection(sock, connection);
+    printf("porta %d\n",local_port);
     return connection;
 }
 
@@ -17,6 +24,7 @@ void TcpServerSocket::start_listening(int backlog)
     connection = listen(sock, backlog);
     test_connection(sock, connection);
     printf("Servidor ouvindo por conexões...\n");
+
 }
 
 void TcpServerSocket::accept_connection()
