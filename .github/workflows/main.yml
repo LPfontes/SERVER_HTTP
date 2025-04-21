@@ -2,7 +2,7 @@ name: Deploy para VM Azure
 
 on:
   push:
-    branches: [ main ]
+     workflow_dispatch:
 
 jobs:
   deploy:
