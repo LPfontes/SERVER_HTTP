@@ -1,0 +1,38 @@
+# This is a basic workflow that is manually triggered
+
+name: Azure VM Control
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Start or Stop VM'
+        required: true
+        default: 'start'
+        type: choice
+        options:
+          - start
+          - stop
+
+jobs:
+  control-vm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+         
+
+      - name: Start or Stop VM
+        run: |
+          RESOURCE_GROUP="projeto-so_group"
+          VM_NAME="Projeto-so"
+
+          if [[ "${{ github.event.inputs.action }}" == "start" ]]; then
+            az vm start --resource-group $RESOURCE_GROUP --name $VM_NAME
+          else
+            az vm deallocate --resource-group $RESOURCE_GROUP --name $VM_NAME
+          fi
+
