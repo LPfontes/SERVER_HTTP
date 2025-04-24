@@ -20,12 +20,19 @@ Este projeto implementa um servidor TCP simples em C++ que permite:
 ---
 Estrutura
 ├── Dockerfile              # Define o ambiente do servidor C++
+
 ├── docker-compose.yaml     # Configura o serviço com Docker Compose
+
 ├── index.html              # Página de upload
+
 ├── main.cpp                # Ponto de entrada
+
 ├── TcpServerSocket.cpp/.hpp
+
 ├── RedimensionalImagem.cpp # Lógica de redimensionamento
+
 ├── stb_image_*             # Bibliotecas para imagem (sem dependências externas)
+
 ├── makefile
 
 ## Como usar
