@@ -1,0 +1,26 @@
+# Binários e objetos compilados
+/server
+*.o
+*.out
+*.exe
+
+# Arquivos de log e temporários
+*.log
+*.tmp
+
+# Makefile intermediários
+*.d
+
+# VSCode
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.sock
+
+# Backup
+*~

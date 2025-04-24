@@ -15,7 +15,7 @@ COPY . .
 RUN g++ main.cpp TcpServerSocket.cpp Socket.cpp -o server
 
 # Expõe a porta 8080
-EXPOSE 8080
+EXPOSE 80
 
 # Comando para iniciar o servidor
 CMD ["./server"]

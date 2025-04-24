@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload e Download de Imagem Dinâmica</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      color: #333;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #4a90e2;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      display: inline-block;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #357abd;
+    }
+
+    #resultado {
+      margin-top: 30px;
+    }
+
+    #linkDownload button {
+      margin-top: 10px;
+      background-color: #27ae60;
+    }
+
+    #linkDownload button:hover {
+      background-color: #1e874b;
+    }
+  </style>
+</head>
+<body>
+  <h1>📷 Upload de Imagem</h1>
+
+  <form id="formularioUpload" enctype="multipart/form-data">
+    <input type="file" name="imagem" id="inputImagem" accept="image/*" required>
+    <br>
+    <button type="submit">Enviar Imagem</button>
+  </form>
+
+  <div id="resultado" style="display:none;">
+    <h2>Imagem processada com sucesso!</h2>
+    <a id="linkDownload" href="#" download>
+      <button>📥 Baixar Imagem Processada</button>
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('formularioUpload').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const input = document.getElementById("inputImagem");
+
+      const tipo = input.files[0].type;
+      const extensao = tipo.split('/')[1];
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        const link = document.getElementById('linkDownload');
+        link.href = url;
+        link.download = `imagem_processada.${extensao}`;
+
+        document.getElementById('resultado').style.display = 'block';
+      } else {
+        alert("Erro ao enviar imagem!");
+      }
+    });
+  </script>
+</body>
+</html>
