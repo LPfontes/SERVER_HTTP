@@ -19,6 +19,7 @@ Este projeto implementa um servidor TCP simples em C++ que permite:
 
 ---
 Estrutura
+
 ├── Dockerfile              # Define o ambiente do servidor C++
 
 ├── docker-compose.yaml     # Configura o serviço com Docker Compose
