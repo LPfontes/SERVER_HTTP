@@ -5,7 +5,7 @@ Este projeto implementa um servidor TCP simples em C++ que permite:
 - Redimensionar a imagem automaticamente (dobrando as dimensões originais)
 - Fazer o download da imagem processada
 - Suporte para JPEG e PNG
-- Servido com sockets TCP puros (sem frameworks web!)
+- Servido com sockets TCP puros (sem frameworks web)
 
 ---
 
