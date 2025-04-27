@@ -14,6 +14,7 @@ Este projeto implementa um servidor TCP simples em C++ que permite:
 - C++
 - HTML/CSS/JS
 - Sockets TCP (POSIX)
+- Thread
 - Bibliotecas [stb_image](https://github.com/nothings/stb)
 - Docker
 
