@@ -3,9 +3,7 @@ version: '3.8'
 services:
   servidor-cpp:
     build: .
-    container_name: servidor_cpp
+    container_name: servidor-cpp
     ports:
       - "8080:8080"
-    volumes:
-      - .:/app
     restart: unless-stopped

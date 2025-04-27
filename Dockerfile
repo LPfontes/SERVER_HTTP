@@ -12,10 +12,10 @@ WORKDIR /app
 COPY . .
 
 # Compila o projeto
-RUN g++ main.cpp TcpServerSocket.cpp Socket.cpp -o server
+RUN make
 
 # Expõe a porta 8080
-EXPOSE 80
+EXPOSE 8080
 
 # Comando para iniciar o servidor
 CMD ["./server"]
