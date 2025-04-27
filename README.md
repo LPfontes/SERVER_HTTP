@@ -8,6 +8,7 @@ Este projeto implementa um servidor TCP simples em C++ que permite:
 - Servido com sockets TCP puros (sem frameworks web)
 
 ---
+![image](https://github.com/user-attachments/assets/0f56fc3d-5f0d-448d-9ac0-302f981a7533)
 
 ## Tecnologias
 
