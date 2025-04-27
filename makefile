@@ -6,7 +6,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++11
 
 # Arquivos fonte e objetos
-SRCS = main.cpp TcpServerSocket.cpp Socket.cpp
+SRCS = main.cpp TcpServerSocket.cpp Socket.cpp ThreadPool.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Regra padrão

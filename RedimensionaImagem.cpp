@@ -7,7 +7,7 @@
 #include "stb_image_resize2.h"
 #include <iostream>
 
-void redimensiona_imagem(const char* inputPath, const char* outputPath) {
+void redimensiona_imagem(const char* inputPath, const char* outputPath,bool type) {
     int w, h, channels;
 
     // Carrega a imagem original
@@ -45,8 +45,11 @@ void redimensiona_imagem(const char* inputPath, const char* outputPath) {
     );
 
     // Salva como JPEG
-    stbi_write_jpg(outputPath, newW, newH, channels, outputImage, 100);
-
+    if (type) { 
+        stbi_write_png(outputPath, newW, newH, channels, outputImage, newW * channels);
+    } else {
+        stbi_write_jpg(outputPath, newW, newH, channels, outputImage, 100);
+    }
     // Libera recursos
     stbi_image_free(inputImage);
     delete[] outputImage;

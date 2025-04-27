@@ -2,45 +2,52 @@ name: Deploy para VM Azure
 
 on:
   push:
-     branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
 
-    - name: Login no Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login no Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Garantir que a VM esteja ligada
-      run: |
-        az vm start --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_VM_NAME }}
+      - name: Garantir que a VM esteja ligada
+        run: |
+          az vm start --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_VM_NAME }}
 
-    - name: Login no Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build da imagem
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest .
+      - name: Build da imagem Docker
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest .
 
-    - name: Push para Docker Hub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
+      - name: Push da imagem para Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
 
-    - name: Deploy na VM via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.VM_KEY }}
-        script: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
-          docker stop servidor_so || true
-          docker rm servidor_so || true
-          docker run -d --name servidor_so -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
+      - name: Deploy na VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_KEY }}
+          script: |
+            set -e  # Garante que o script pare em caso de erro
+            echo "Atualizando imagem do container..."
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
+            
+            echo "Parando e removendo container antigo (se existir)..."
+            docker stop servidor_so || true
+            docker rm servidor_so || true
+            
+            echo "Iniciando novo container..."
+            docker run -d --name servidor_so -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/projeto_so:latest
